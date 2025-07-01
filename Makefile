@@ -3,6 +3,8 @@ IMAGE_URL = https://cdimage.ubuntu.com/releases/24.04.2/release/ubuntu-24.04.2-p
 
 IMAGE_FILENAME_COMPRESSED = $(notdir $(IMAGE_URL))
 IMAGE_FILENAME = $(basename $(IMAGE_FILENAME_COMPRESSED))
+USER_DATA_TEMPLATE_FILEPATH = src/user-data.template.yaml
+USER_DATA_FILEPATH = system-boot/user-data
 
 $(IMAGE_FILENAME_COMPRESSED): \
 	/
@@ -22,6 +24,16 @@ $(IMAGE_FILENAME): \
 		--verbose \
 		--force \
 		"$(IMAGE_FILENAME_COMPRESSED)" \
+		;
+
+$(USER_DATA_FILEPATH): \
+	$(SSH_PUBLIC_KEY_FILEPATH) \
+	$(USER_DATA_TEMPLATE_FILEPATH) \
+	/
+	SSH_PUBLIC_KEY="$(shell cat $(SSH_PUBLIC_KEY_FILEPATH))" \
+		envsubst \
+			< "$(USER_DATA_TEMPLATE_FILEPATH)" \
+			> "$(USER_DATA_FILEPATH)" \
 		;
 
 .PHONY: clean
