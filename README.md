@@ -1,4 +1,4 @@
-# RPI5 Imager
+# provipi
 
 ## Prerequisites
 - macOS
