@@ -1,7 +1,27 @@
 # provipi
 
+`provipi` (**provi**sioning **pi**) is a tool for automated Raspberry Pi 5 provisioning:
+
+* Downloading the Ubuntu image
+* Flashing a microSD card
+* Applying a custom cloud-init configuration
+
+For most users, the official [Raspberry Pi Imager](https://github.com/raspberrypi/rpi-imager) is the recommended way to set up a Raspberry Pi.
+
+However, I prefer to avoid installing extra software, so **provipi** automates Raspberry Pi 5 provisioning using only macOS built-in tools.
+
+
 ## Prerequisites
-- macOS
+
+macOS built-in tools:
+* `make`
+* `curl`
+* `diskutil`
+* `rsync`
+* `dd`
+* `osascript`
+* `envsubst`
+* `gunzip`
 
 
 ## Usage
