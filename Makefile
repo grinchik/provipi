@@ -1,5 +1,5 @@
 # https://ubuntu.com/download/raspberry-pi
-IMAGE_URL = https://cdimage.ubuntu.com/releases/24.04.2/release/ubuntu-24.04.2-preinstalled-server-arm64+raspi.img.xz
+IMAGE_URL = https://cdimage.ubuntu.com/releases/24.04.3/release/ubuntu-24.04.3-preinstalled-server-arm64+raspi.img.xz
 
 IMAGE_FILENAME_COMPRESSED = $(notdir $(IMAGE_URL))
 IMAGE_FILENAME = $(basename $(IMAGE_FILENAME_COMPRESSED))
