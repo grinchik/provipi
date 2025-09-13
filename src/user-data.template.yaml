@@ -26,6 +26,7 @@ runcmd:
   - apt-get upgrade --assume-yes
   - apt-get install --assume-yes zfsutils-linux
   - apt-get install --assume-yes nvme-cli
+  - reboot
 
 bootcmd:
   - mount -o remount,noatime /
