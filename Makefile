@@ -14,18 +14,18 @@ MOUNT_FILEPATH = /Volumes/system-boot/
 
 .PHONY: _
 _: \
-	$(IMAGE_FILENAME) \
-	$(USER_DATA_FILEPATH) \
-	$(NETWORK_CONFIG_FILEPATH) \
-	confirm \
-	unmount \
-	flash \
-	sync \
-	copy \
-	sync \
-	unmount \
-	notify \
 	/
+	$(MAKE) $(IMAGE_FILENAME);
+	$(MAKE) $(USER_DATA_FILEPATH);
+	$(MAKE) $(NETWORK_CONFIG_FILEPATH);
+	$(MAKE) confirm;
+	$(MAKE) unmount;
+	$(MAKE) flash;
+	$(MAKE) sync;
+	$(MAKE) copy;
+	$(MAKE) sync;
+	$(MAKE) unmount;
+	$(MAKE) notify;
 
 $(IMAGE_FILENAME_COMPRESSED): \
 	/
