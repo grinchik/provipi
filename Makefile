@@ -1,16 +1,22 @@
 # https://ubuntu.com/download/raspberry-pi
 IMAGE_URL = https://cdimage.ubuntu.com/releases/24.04.3/release/ubuntu-24.04.3-preinstalled-server-arm64+raspi.img.xz
 
+DIRECT_NETWORK = 192.168.3.0/24
+DIRECT_INTERFACE_IP = 192.168.3.100/24
+
 IMAGE_FILENAME_COMPRESSED = $(notdir $(IMAGE_URL))
 IMAGE_FILENAME = $(basename $(IMAGE_FILENAME_COMPRESSED))
 USER_DATA_TEMPLATE_FILEPATH = src/user-data.template.yaml
 USER_DATA_FILEPATH = system-boot/user-data
+NETWORK_CONFIG_TEMPLATE_FILEPATH = src/network-config.template.yaml
+NETWORK_CONFIG_FILEPATH = system-boot/network-config
 MOUNT_FILEPATH = /Volumes/system-boot/
 
 .PHONY: _
 _: \
 	$(IMAGE_FILENAME) \
 	$(USER_DATA_FILEPATH) \
+	$(NETWORK_CONFIG_FILEPATH) \
 	confirm \
 	unmount \
 	flash \
@@ -46,10 +52,20 @@ $(USER_DATA_FILEPATH): \
 	$(USER_DATA_TEMPLATE_FILEPATH) \
 	/
 	SSH_PUBLIC_KEY="$(shell cat $(SSH_PUBLIC_KEY_FILEPATH))" \
+	DIRECT_NETWORK="$(DIRECT_NETWORK)" \
 		envsubst \
 			< "$(USER_DATA_TEMPLATE_FILEPATH)" \
 			> "$(USER_DATA_FILEPATH)" \
 		;
+
+$(NETWORK_CONFIG_FILEPATH): \
+	$(NETWORK_CONFIG_TEMPLATE_FILEPATH) \
+	/
+	DIRECT_INTERFACE_IP="$(DIRECT_INTERFACE_IP)" \
+		envsubst \
+			< "$(NETWORK_CONFIG_TEMPLATE_FILEPATH)" \
+			> "$(NETWORK_CONFIG_FILEPATH)" \
+	;
 
 .PHONY: disk-list
 disk-list: \
