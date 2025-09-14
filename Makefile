@@ -1,5 +1,6 @@
 # https://ubuntu.com/download/raspberry-pi
 IMAGE_URL = https://cdimage.ubuntu.com/releases/24.04.3/release/ubuntu-24.04.3-preinstalled-server-arm64+raspi.img.xz
+CHECKSUM = 9bb1799cee8965e6df0234c1c879dd35be1d87afe39b84951f278b6bd0433e56
 
 DIRECT_NETWORK = 192.168.3.0/24
 DIRECT_INTERFACE_IP = 192.168.3.100/24
@@ -16,6 +17,7 @@ MOUNT_FILEPATH = /Volumes/system-boot/
 _: \
 	/
 	$(MAKE) $(IMAGE_FILENAME);
+	$(MAKE) verification;
 	$(MAKE) $(USER_DATA_FILEPATH);
 	$(MAKE) $(NETWORK_CONFIG_FILEPATH);
 	$(MAKE) confirm;
@@ -65,6 +67,18 @@ $(NETWORK_CONFIG_FILEPATH): \
 		envsubst \
 			< "$(NETWORK_CONFIG_TEMPLATE_FILEPATH)" \
 			> "$(NETWORK_CONFIG_FILEPATH)" \
+	;
+
+.PHONY: verification
+verification: \
+	$(IMAGE_FILENAME_COMPRESSED) \
+	/
+	echo \
+		"$(CHECKSUM) *$(IMAGE_FILENAME_COMPRESSED)" \
+	| \
+	shasum \
+		--algorithm 256 \
+		--check \
 	;
 
 .PHONY: disk-list
