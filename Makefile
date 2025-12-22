@@ -2,15 +2,10 @@
 IMAGE_URL = https://cdimage.ubuntu.com/releases/24.04.3/release/ubuntu-24.04.3-preinstalled-server-arm64+raspi.img.xz
 CHECKSUM = 9bb1799cee8965e6df0234c1c879dd35be1d87afe39b84951f278b6bd0433e56
 
-DIRECT_NETWORK = 192.168.3.0/24
-DIRECT_INTERFACE_IP = 192.168.3.100/24
-
 IMAGE_FILENAME_COMPRESSED = $(notdir $(IMAGE_URL))
 IMAGE_FILENAME = $(basename $(IMAGE_FILENAME_COMPRESSED))
 USER_DATA_TEMPLATE_FILEPATH = src/user-data.template.yaml
 USER_DATA_FILEPATH = system-boot/user-data
-NETWORK_CONFIG_TEMPLATE_FILEPATH = src/network-config.template.yaml
-NETWORK_CONFIG_FILEPATH = system-boot/network-config
 MOUNT_FILEPATH = /Volumes/system-boot/
 
 .PHONY: _
@@ -19,7 +14,6 @@ _: \
 	$(MAKE) $(IMAGE_FILENAME);
 	$(MAKE) verification;
 	$(MAKE) $(USER_DATA_FILEPATH);
-	$(MAKE) $(NETWORK_CONFIG_FILEPATH);
 	$(MAKE) confirm;
 	$(MAKE) unmount;
 	$(MAKE) flash;
@@ -54,20 +48,10 @@ $(USER_DATA_FILEPATH): \
 	$(USER_DATA_TEMPLATE_FILEPATH) \
 	/
 	SSH_PUBLIC_KEY="$(shell cat $(SSH_PUBLIC_KEY_FILEPATH))" \
-	DIRECT_NETWORK="$(DIRECT_NETWORK)" \
 		envsubst \
 			< "$(USER_DATA_TEMPLATE_FILEPATH)" \
 			> "$(USER_DATA_FILEPATH)" \
 		;
-
-$(NETWORK_CONFIG_FILEPATH): \
-	$(NETWORK_CONFIG_TEMPLATE_FILEPATH) \
-	/
-	DIRECT_INTERFACE_IP="$(DIRECT_INTERFACE_IP)" \
-		envsubst \
-			< "$(NETWORK_CONFIG_TEMPLATE_FILEPATH)" \
-			> "$(NETWORK_CONFIG_FILEPATH)" \
-	;
 
 .PHONY: verification
 verification: \
