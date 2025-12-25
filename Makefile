@@ -6,7 +6,9 @@ IMAGE_FILENAME_COMPRESSED = $(notdir $(IMAGE_URL))
 IMAGE_FILENAME = $(basename $(IMAGE_FILENAME_COMPRESSED))
 USER_DATA_TEMPLATE_FILEPATH = src/user-data.template.yaml
 USER_DATA_FILEPATH = system-boot/user-data
+CONFIG_TXT_FILEPATH = src/config.txt
 MOUNT_FILEPATH = /Volumes/system-boot/
+MOUNT_CONFIG_TXT_FILEPATH = $(MOUNT_FILEPATH)config.txt
 
 .PHONY: _
 _: \
@@ -121,6 +123,12 @@ copy: \
 		--exclude=".DS_Store" \
 		"$(dir $(USER_DATA_FILEPATH))" \
 		"$(MOUNT_FILEPATH)" \
+		;
+
+	cat \
+		"$(CONFIG_TXT_FILEPATH)" \
+		>> \
+		"$(MOUNT_CONFIG_TXT_FILEPATH)" \
 		;
 
 .PHONY: notify
