@@ -26,6 +26,10 @@ runcmd:
   - apt-get upgrade --assume-yes
   - apt-get install --assume-yes zfsutils-linux
   - apt-get install --assume-yes nvme-cli
+  - systemctl daemon-reload
+  - systemctl start zfs-import-cache.service
+  - zpool import -f pool1 && chown rpi5:rpi5 /mnt/pool1
+  - zpool import -f pool2 && chown rpi5:rpi5 /mnt/pool2
   - reboot
 
 bootcmd:
