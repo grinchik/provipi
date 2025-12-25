@@ -33,4 +33,4 @@ runcmd:
   - reboot
 
 bootcmd:
-  - mount -o remount,noatime /
+  - mount --options remount,noatime /
