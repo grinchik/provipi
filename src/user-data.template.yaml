@@ -73,6 +73,24 @@ write_files:
         </service>
       </service-group>
 
+  # pimoni
+  - path: /etc/systemd/system/pimoni.service
+    content: |
+      [Unit]
+      Description=pimoni
+      After=network-online.target
+      Wants=network-online.target
+
+      [Service]
+      Type=simple
+      WorkingDirectory=/home/rpi5/pimoni
+      ExecStart=/bin/bash -c './watch.sh 5 ./readings.sh | stdbuf -oL jq --compact-output | ./circular-buffer.py 10 | ./report.py 0.0.0.0 3100'
+      Restart=always
+      RestartSec=5
+
+      [Install]
+      WantedBy=multi-user.target
+
 runcmd:
   - ufw default deny incoming
   - ufw default allow outgoing
@@ -92,6 +110,12 @@ runcmd:
   - systemctl restart smbd
   - apt-get install --assume-yes avahi-daemon
   - systemctl enable --now avahi-daemon
+
+  # pimoni
+  - git clone https://github.com/grinchik/pimoni.git /home/rpi5/pimoni
+  - systemctl enable --now pimoni.service
+  - ufw allow from 192.168.1.0/24 to any port 3100 proto tcp
+
   - reboot
 
 bootcmd:
