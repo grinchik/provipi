@@ -116,6 +116,9 @@ runcmd:
   - systemctl enable --now pimoni.service
   - ufw allow from 192.168.1.0/24 to any port 3100 proto tcp
 
+  # audio
+  - apt-get install --assume-yes alsa-utils
+
   - reboot
 
 bootcmd:

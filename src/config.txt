@@ -5,3 +5,6 @@ dtparam=fan_temp0=50000,fan_temp0_hyst=3000,fan_temp0_speed=75
 dtparam=fan_temp1=57000,fan_temp1_hyst=3000,fan_temp1_speed=135
 dtparam=fan_temp2=63000,fan_temp2_hyst=3000,fan_temp2_speed=195
 dtparam=fan_temp3=70000,fan_temp3_hyst=3000,fan_temp3_speed=255
+
+# Enable audio output on the case I/O board
+dtoverlay=dwc2,dr_mode=host
