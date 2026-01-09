@@ -113,8 +113,11 @@ runcmd:
 
   # pimoni
   - git clone https://github.com/grinchik/pimoni.git /home/rpi5/pimoni
+  - python3 -m venv /home/rpi5/pimoni/venv
+  - /home/rpi5/pimoni/venv/bin/pip install --requirement /home/rpi5/pimoni/requirements.txt
+  - cp /home/rpi5/pimoni/pimoni.service /etc/systemd/system/
+  - systemctl daemon-reload
   - systemctl enable --now pimoni.service
-  - ufw allow from 192.168.1.0/24 to any port 3100 proto tcp
 
   # audio
   - apt-get install --assume-yes alsa-utils
