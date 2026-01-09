@@ -113,6 +113,7 @@ runcmd:
 
   # pimoni
   - git clone https://github.com/grinchik/pimoni.git /home/rpi5/pimoni
+  - apt-get install --assume-yes nvme-cli fonts-terminus python3-venv
   - python3 -m venv /home/rpi5/pimoni/venv
   - /home/rpi5/pimoni/venv/bin/pip install --requirement /home/rpi5/pimoni/requirements.txt
   - cp /home/rpi5/pimoni/pimoni.service /etc/systemd/system/
